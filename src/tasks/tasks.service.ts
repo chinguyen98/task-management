@@ -1,7 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TaskRepository } from './task.repository';
 
 @Injectable()
 export class TasksService {
+    constructor(@InjectRepository(TaskRepository) private taskRepository: TaskRepository) {
+
+    }
+
+    getTaskById(id: number) {
+        
+    }
 
 
     // private tasks: Task[] = [];
