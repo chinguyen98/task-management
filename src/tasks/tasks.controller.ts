@@ -8,9 +8,10 @@ import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/auth/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt.strategy';
 
 @Controller('tasks')
-@UseGuards(AuthGuard())
+@UseGuards(new JwtAuthGuard())
 export class TasksController {
     constructor(private tasksService: TasksService) {
 

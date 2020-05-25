@@ -1,6 +1,6 @@
-import { PassportStrategy } from '@nestjs/passport';
+import { PassportStrategy, AuthGuard } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ExecutionContext } from '@nestjs/common';
 import { IJwtPayLoad } from './jwt-payload.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from './user.repository';
@@ -25,6 +25,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             throw new UnauthorizedException('Invalid username or password!');
         }
 
+        return user;
+    }
+}
+
+export class JwtAuthGuard extends AuthGuard('jwt') {
+    canActivate(context: ExecutionContext) {
+        return super.canActivate(context);
+    }
+
+    handleRequest(err: any, user: any, info: any) {
+        if (err || !user) {
+            throw err || new UnauthorizedException('Chưa dăng nhập mà đòi vô!');
+        }
         return user;
     }
 }
