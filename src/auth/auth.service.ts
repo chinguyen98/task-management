@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from './user.repository';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { LoginCredentialsDto, RegisterCredentialsDto } from './dto/auth-credentials.dto';
 import { IJwtPayLoad } from './jwt-payload.interface';
 
 @Injectable()
@@ -12,11 +12,11 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    async signUp(authCredentialsDto: RegisterCredentialsDto): Promise<void> {
         return this.userRepository.signUp(authCredentialsDto);
     }
 
-    async signIn(authCredentialsDto: AuthCredentialsDto): Promise<{ accessToken: string }> {
+    async signIn(authCredentialsDto: LoginCredentialsDto): Promise<{ accessToken: string }> {
         const username = await this.userRepository.validateUserPassword(authCredentialsDto);
         if (!username) {
             throw new UnauthorizedException('Username or password invalid!');
